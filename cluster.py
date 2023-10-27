@@ -121,7 +121,7 @@ if __name__ == "__main__":
         x_batch, y_batch = batch
         x_data.append(x_batch.numpy())  # Convert tensors to NumPy arrays
         y_data.append(y_batch.numpy())  # Convert tensors to NumPy arrays
-
+    x_data = [x_batch.numpy().reshape(-1) for x_batch in x_data]
     x_data = np.vstack(x_data)  # Stack the NumPy arrays vertically
     y_data = np.hstack(y_data)  # Stack the NumPy arrays horizontally
 
@@ -133,7 +133,7 @@ if __name__ == "__main__":
     df = pd.DataFrame(data)
     df.to_csv('image_dog.csv', index=False)
     print('csv successful')
-    
+
     res = resnet.get_resnet(args.resnet)
     model = network.Network(res, args.feature_dim, class_num)
     model_fp = os.path.join(args.model_path, "checkpoint_{}.tar".format(args.start_epoch))
