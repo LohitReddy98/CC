@@ -136,7 +136,7 @@ if __name__ == "__main__":
     print(x_data[1])
 
     df = pd.DataFrame(data)
-    df.to_csv('image_dog.csv', index=False)
+    df.to_csv('image_10.csv', index=False)
     print('csv successful')
 
     res = resnet.get_resnet(args.resnet)
