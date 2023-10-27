@@ -88,8 +88,6 @@ if __name__ == "__main__":
             transform=transform.Transforms(size=args.image_size).test_transform,
         )
         class_num = 10
-        torch.save(dataset, 'ImageNet-10.pth')
-        print('save success')
 
     elif args.dataset == "ImageNet-dogs":
         dataset = torchvision.datasets.ImageFolder(
@@ -97,7 +95,6 @@ if __name__ == "__main__":
             transform=transform.Transforms(size=args.image_size).test_transform,
         )
         class_num = 15
-        torch.save(dataset, 'ImageNet-dogs.pth')
 
     elif args.dataset == "tiny-ImageNet":
         dataset = torchvision.datasets.ImageFolder(
@@ -109,11 +106,11 @@ if __name__ == "__main__":
         raise NotImplementedError
     data_loader = torch.utils.data.DataLoader(
         dataset,
-        batch_size=500,
         shuffle=False,
         drop_last=False,
-        num_workers=args.workers,
     )
+    torch.save(dataset, 'dogs.pth')
+
 
     res = resnet.get_resnet(args.resnet)
     model = network.Network(res, args.feature_dim, class_num)
