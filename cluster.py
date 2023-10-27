@@ -119,11 +119,13 @@ if __name__ == "__main__":
 
     for batch in data_loader:
         x_batch, y_batch = batch
-        x_data.append(x_batch.numpy())  # Convert tensors to NumPy arrays
-        y_data.append(y_batch.numpy())  # Convert tensors to NumPy arrays
+        x_data.append(x_batch)  # No need to convert NumPy arrays
+        y_data.append(y_batch)  # No need to convert NumPy arrays
+
     x_data = np.vstack(x_data)  # Stack the NumPy arrays vertically
     y_data = np.hstack(y_data)  # Stack the NumPy arrays horizontally
 
+    # Convert RGB images to 1D arrays
     x_data_flattened = x_data.reshape(x_data.shape[0], -1)
 
     # Create a DataFrame with the labels in the first column
