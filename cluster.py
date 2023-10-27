@@ -119,7 +119,7 @@ if __name__ == "__main__":
 
     for batch in data_loader:
         x_batch, y_batch = batch
-        x_data.append(x_batch.reshape(-1))  # Convert tensors to NumPy arrays
+        x_data.append(x_batch.numpy())  # Convert tensors to NumPy arrays
         y_data.append(y_batch.numpy())  # Convert tensors to NumPy arrays
     x_data = np.vstack(x_data)  # Stack the NumPy arrays vertically
     y_data = np.hstack(y_data)  # Stack the NumPy arrays horizontally
@@ -128,6 +128,7 @@ if __name__ == "__main__":
     data = {'Label': y_data}
     for i in range(x_data.shape[1]):
         data[f'Feature_{i+1}'] = x_data[:, i]
+    print(x_data[1])
 
     df = pd.DataFrame(data)
     df.to_csv('image_dog.csv', index=False)
