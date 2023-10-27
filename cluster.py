@@ -8,6 +8,8 @@ from modules import resnet, network, transform
 from evaluation import evaluation
 from torch.utils import data
 import copy
+import pandas as pd
+
 
 
 def inference(loader, model, device):
@@ -109,9 +111,29 @@ if __name__ == "__main__":
         shuffle=False,
         drop_last=False,
     )
-    torch.save(dataset, 'dogs.pth')
 
 
+# Initialize empty lists to store the data
+    x_data = []
+    y_data = []
+
+    for batch in data_loader:
+        x_batch, y_batch = batch
+        x_data.append(x_batch.numpy())  # Convert tensors to NumPy arrays
+        y_data.append(y_batch.numpy())  # Convert tensors to NumPy arrays
+
+    x_data = np.vstack(x_data)  # Stack the NumPy arrays vertically
+    y_data = np.hstack(y_data)  # Stack the NumPy arrays horizontally
+
+    # Create a DataFrame with the labels in the first column
+    data = {'Label': y_data}
+    for i in range(x_data.shape[1]):
+        data[f'Feature_{i+1}'] = x_data[:, i]
+
+    df = pd.DataFrame(data)
+    df.to_csv('image_dog.csv', index=False)
+    print('csv successful')
+    
     res = resnet.get_resnet(args.resnet)
     model = network.Network(res, args.feature_dim, class_num)
     model_fp = os.path.join(args.model_path, "checkpoint_{}.tar".format(args.start_epoch))
