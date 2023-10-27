@@ -82,7 +82,6 @@ if __name__ == "__main__":
         )
         dataset = torch.utils.data.ConcatDataset([train_dataset, test_dataset])
         class_num = 10
-        print(dataset.shape)
     elif args.dataset == "ImageNet-10":
         dataset = torchvision.datasets.ImageFolder(
             root='datasets/imagenet-10',
@@ -90,8 +89,6 @@ if __name__ == "__main__":
         )
         class_num = 10
         torch.save(dataset, 'ImageNet-10.pth')
-
-        print(dataset.shape)
 
     elif args.dataset == "ImageNet-dogs":
         dataset = torchvision.datasets.ImageFolder(
