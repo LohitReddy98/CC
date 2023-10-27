@@ -121,12 +121,13 @@ if __name__ == "__main__":
 
     for batch in data_loader:
         x_batch, y_batch = batch
-        x_batch_gray = np.array(Image.fromarray(x_batch.transpose(1, 2, 0)).convert('L'))
+        x_batch = x_batch.numpy()
 
-    # Flatten the grayscale data to a 1D array
-        x_batch_flat = x_batch_gray.reshape(-1)
+    # Convert RGB images to grayscale
+        x_batch_gray = np.dot(x_batch[...,:3], [0.2989, 0.5870, 0.1140])
 
-        x_data.append(x_batch_flat)  # Convert tensors to NumPy arrays
+    # Append the grayscale image to x_data
+        x_data.append(x_batch_gray)
         y_data.append(y_batch.numpy())  # Convert tensors to NumPy arrays
     x_data = np.vstack(x_data)  # Stack the NumPy arrays vertically
     y_data = np.hstack(y_data)  # Stack the NumPy arrays horizontally
