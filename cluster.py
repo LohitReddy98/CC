@@ -119,24 +119,20 @@ if __name__ == "__main__":
 
     for batch in data_loader:
         x_batch, y_batch = batch
-        x_data.append(x_batch)  # No need to convert NumPy arrays
-        y_data.append(y_batch)  # No need to convert NumPy arrays
-
+        x_data.append(x_batch.numpy().reshape(-1))  # Convert tensors to NumPy arrays
+        y_data.append(y_batch.numpy())  # Convert tensors to NumPy arrays
     x_data = np.vstack(x_data)  # Stack the NumPy arrays vertically
     y_data = np.hstack(y_data)  # Stack the NumPy arrays horizontally
 
-    # Convert RGB images to 1D arrays
-    x_data_flattened = x_data.reshape(x_data.shape[0], -1)
-
     # Create a DataFrame with the labels in the first column
     data = {'Label': y_data}
-    for i in range(x_data_flattened.shape[1]):
-        data[f'Pixel_{i+1}'] = x_data_flattened[:, i]
+    for i in range(x_data.shape[1]):
+        data[f'Feature_{i+1}'] = x_data[:, i]
 
     df = pd.DataFrame(data)
     df.to_csv('image_dog.csv', index=False)
-    print('CSV successfully created')
-    
+    print('csv successful')
+
     res = resnet.get_resnet(args.resnet)
     model = network.Network(res, args.feature_dim, class_num)
     model_fp = os.path.join(args.model_path, "checkpoint_{}.tar".format(args.start_epoch))
