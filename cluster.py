@@ -9,6 +9,8 @@ from evaluation import evaluation
 from torch.utils import data
 import copy
 import pandas as pd
+from PIL import Image
+
 
 
 
@@ -119,7 +121,12 @@ if __name__ == "__main__":
 
     for batch in data_loader:
         x_batch, y_batch = batch
-        x_data.append(x_batch.reshape(-1))  # Convert tensors to NumPy arrays
+        x_batch_gray = np.array(Image.fromarray(x_batch.transpose(1, 2, 0)).convert('L'))
+
+    # Flatten the grayscale data to a 1D array
+        x_batch_flat = x_batch_gray.reshape(-1)
+
+        x_data.append(x_batch_flat)  # Convert tensors to NumPy arrays
         y_data.append(y_batch.numpy())  # Convert tensors to NumPy arrays
     x_data = np.vstack(x_data)  # Stack the NumPy arrays vertically
     y_data = np.hstack(y_data)  # Stack the NumPy arrays horizontally
