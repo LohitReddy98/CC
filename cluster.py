@@ -89,6 +89,7 @@ if __name__ == "__main__":
         )
         class_num = 10
         torch.save(dataset, 'ImageNet-10.pth')
+        print('save success')
 
     elif args.dataset == "ImageNet-dogs":
         dataset = torchvision.datasets.ImageFolder(
