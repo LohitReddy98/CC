@@ -124,7 +124,7 @@ if __name__ == "__main__":
         x_batch = x_batch.numpy()
 
         x_batch_gray = 0.299 * x_batch[:, 0, :, :] + 0.587 * x_batch[:, 1, :, :] + 0.114 * x_batch[:, 2, :, :]
-        x_data.append(x_batch_gray)  # Convert grayscale tensor to NumPy array
+        x_data.append(x_batch_gray.flatten())  # Convert grayscale tensor to NumPy array
         y_data.append(y_batch.numpy())  # Convert tensors to NumPy arrays
     x_data = np.vstack(x_data)  # Stack the NumPy arrays vertically
     y_data = np.hstack(y_data)  # Stack the NumPy arrays horizontally
