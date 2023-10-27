@@ -89,6 +89,8 @@ if __name__ == "__main__":
             transform=transform.Transforms(size=args.image_size).test_transform,
         )
         class_num = 10
+        torch.save(dataset, 'ImageNet-10.pth')
+
         print(dataset.shape)
 
     elif args.dataset == "ImageNet-dogs":
@@ -97,6 +99,8 @@ if __name__ == "__main__":
             transform=transform.Transforms(size=args.image_size).test_transform,
         )
         class_num = 15
+        torch.save(dataset, 'ImageNet-dogs.pth')
+
     elif args.dataset == "tiny-ImageNet":
         dataset = torchvision.datasets.ImageFolder(
             root='datasets/tiny-imagenet-200/train',
