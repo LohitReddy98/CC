@@ -99,12 +99,15 @@ if __name__ == "__main__":
         drop_last=True,
         num_workers=args.workers,
     )
+    print ("dataloader")
     # initialize model
     res = resnet.get_resnet(args.resnet)
     model = network.Network(res, args.feature_dim, class_num)
     model = model.to('cpu')
     # optimizer / loss
     optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate, weight_decay=args.weight_decay)
+    print ("optimizer")
+
     if args.reload:
         model_fp = os.path.join(args.model_path, "checkpoint_{}.tar".format(args.start_epoch))
         checkpoint = torch.load(model_fp)
@@ -117,6 +120,8 @@ if __name__ == "__main__":
     criterion_cluster = contrastive_loss.ClusterLoss(class_num, args.cluster_temperature, loss_device).to(loss_device)
     # train
     for epoch in range(args.start_epoch, args.epochs):
+        print ("epoch")
+
         lr = optimizer.param_groups[0]["lr"]
         loss_epoch = train()
         if epoch % 10 == 0:
