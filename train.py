@@ -119,7 +119,7 @@ if __name__ == "__main__":
         loss_device)
     criterion_cluster = contrastive_loss.ClusterLoss(class_num, args.cluster_temperature, loss_device).to(loss_device)
     # train
-    print ("epoch"+args.start_epoch+"  "+args.epochs)
+    print ("epoch"+str(args.start_epoch)+"  "+str(args.epochs))
 
     for epoch in range(args.start_epoch, args.epochs):
         print ("epoch")
