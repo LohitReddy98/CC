@@ -37,8 +37,8 @@ if __name__ == "__main__":
         os.makedirs(args.model_path)
 
     torch.manual_seed(args.seed)
-    torch.cuda.manual_seed_all(args.seed)
-    torch.cuda.manual_seed(args.seed)
+    # torch.cuda.manual_seed_all(args.seed)
+    # torch.cuda.manual_seed(args.seed)
     np.random.seed(args.seed)
 
     # prepare data
@@ -111,12 +111,10 @@ if __name__ == "__main__":
         model.load_state_dict(checkpoint['net'])
         optimizer.load_state_dict(checkpoint['optimizer'])
         args.start_epoch = checkpoint['epoch'] + 1
-    # loss_device = torch.device("cuda")
-    # criterion_instance = contrastive_loss.InstanceLoss(args.batch_size, args.instance_temperature, loss_device).to(
-    #     loss_device)
-    # criterion_cluster = contrastive_loss.ClusterLoss(class_num, args.cluster_temperature, loss_device).to(loss_device)
-    criterion_instance = contrastive_loss.InstanceLoss(args.batch_size, args.instance_temperature)
-    criterion_cluster = contrastive_loss.ClusterLoss(class_num, args.cluster_temperature)
+    loss_device = torch.device("cpu")
+    criterion_instance = contrastive_loss.InstanceLoss(args.batch_size, args.instance_temperature, loss_device).to(
+        loss_device)
+    criterion_cluster = contrastive_loss.ClusterLoss(class_num, args.cluster_temperature, loss_device).to(loss_device)
     # train
     for epoch in range(args.start_epoch, args.epochs):
         lr = optimizer.param_groups[0]["lr"]
