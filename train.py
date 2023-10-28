@@ -12,8 +12,8 @@ def train():
     loss_epoch = 0
     for step, ((x_i, x_j), _) in enumerate(data_loader):
         optimizer.zero_grad()
-        x_i = x_i.to('cuda')
-        x_j = x_j.to('cuda')
+        # x_i = x_i.to('cuda')
+        # x_j = x_j.to('cuda')
         z_i, z_j, c_i, c_j = model(x_i, x_j)
         loss_instance = criterion_instance(z_i, z_j)
         loss_cluster = criterion_cluster(c_i, c_j)
@@ -102,7 +102,7 @@ if __name__ == "__main__":
     # initialize model
     res = resnet.get_resnet(args.resnet)
     model = network.Network(res, args.feature_dim, class_num)
-    model = model.to('cuda')
+    # model = model.to('cuda')
     # optimizer / loss
     optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate, weight_decay=args.weight_decay)
     if args.reload:
@@ -111,10 +111,12 @@ if __name__ == "__main__":
         model.load_state_dict(checkpoint['net'])
         optimizer.load_state_dict(checkpoint['optimizer'])
         args.start_epoch = checkpoint['epoch'] + 1
-    loss_device = torch.device("cuda")
-    criterion_instance = contrastive_loss.InstanceLoss(args.batch_size, args.instance_temperature, loss_device).to(
-        loss_device)
-    criterion_cluster = contrastive_loss.ClusterLoss(class_num, args.cluster_temperature, loss_device).to(loss_device)
+    # loss_device = torch.device("cuda")
+    # criterion_instance = contrastive_loss.InstanceLoss(args.batch_size, args.instance_temperature, loss_device).to(
+    #     loss_device)
+    # criterion_cluster = contrastive_loss.ClusterLoss(class_num, args.cluster_temperature, loss_device).to(loss_device)
+    criterion_instance = contrastive_loss.InstanceLoss(args.batch_size, args.instance_temperature)
+    criterion_cluster = contrastive_loss.ClusterLoss(class_num, args.cluster_temperature)
     # train
     for epoch in range(args.start_epoch, args.epochs):
         lr = optimizer.param_groups[0]["lr"]
